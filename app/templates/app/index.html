@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #D9AFD9;
+            background-image: linear-gradient(0deg, #d9afc9ec 0%, #97D9E1 100%);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 100px auto;
+            text-align: center;
+            padding: 20px;
+            background-image: linear-gradient(179.4deg, rgb(220, 223, 225) 1.8%, rgba(22, 255, 243, 0.224) 97.1%);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007BFF;
+            color: #fff;
+        }
+
+        .search-history {
+            margin-top: 30px;
+        }
+
+        .search-history h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .search-history p {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Weather App</h1>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="city" id="locationInput" placeholder="Enter a city">
+        <button type="submit" id="searchButton">Search</button>
+    </form>
+    {% if country_code %}
+    <div class="weather-info">
+        <h2>Weather in {{ city }}</h2>
+        <table>
+            <tr>
+                <th>Attribute</th>
+                <th>Value</th>
+            </tr>
+            <tr>
+                <td>Country Code</td>
+                <td>{{ country_code }}</td>
+            </tr>
+            <tr>
+                <td>Coordinates</td>
+                <td>{{ coordinate }}</td>
+            </tr>
+            <tr>
+                <td>Temperature</td>
+                <td>{{ temp }}</td>
+            </tr>
+            <tr>
+                <td>Pressure</td>
+                <td>{{ pressure }}</td>
+            </tr>
+            <tr>
+                <td>Humidity</td>
+                <td>{{ humidity }}</td>
+            </tr>
+        </table>
+    </div>
+    {% endif %}
+
+    <div class="search-history">
+        <h2>Search History</h2>
+        {% if search_history %}
+            <table>
+                <tr>
+                    <th>City</th>
+                    <th>Timestamp</th>
+                    <th>Country Code</th>
+                    <th>Coordinates</th>
+                    <th>Temperature</th>
+                    <th>Pressure</th>
+                    <th>Humidity</th>
+                </tr>
+                {% for item in search_history %}
+                    <tr>
+                        <td>{{ item.city }}</td>
+                        <td>{{ item.timestamp }}</td>
+                        <td>{{ item.country_code }}</td>
+                        <td>{{ item.coordinate }}</td>
+                        <td>{{ item.temperature }}</td>
+                        <td>{{ item.pressure }}</td>
+                        <td>{{ item.humidity }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No search history available.</p>
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>
